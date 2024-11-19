@@ -1,6 +1,7 @@
 package me.tisleo.autominecart.listeners;
 
 import me.tisleo.autominecart.AutoMinecart;
+import me.tisleo.autominecart.particles.VehicleParticleHandler;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
@@ -13,10 +14,12 @@ import org.bukkit.util.Vector;
 public class VehicleMoveHandler implements Listener {
 
     private final AutoMinecart plugin;
-    private static final Vector multiplier = new Vector(1.3D, 1D, 1.3D);
+    private final Vector multiplier = new Vector(1.5, 1, 1.5);
+    private final VehicleParticleHandler particleHandler;
 
     public VehicleMoveHandler(AutoMinecart plugin) {
         this.plugin = plugin;
+        this.particleHandler = new VehicleParticleHandler(plugin);
     }
 
     @EventHandler
@@ -32,6 +35,9 @@ public class VehicleMoveHandler implements Listener {
 
             Minecart minecart = (Minecart) e.getVehicle();
             minecart.setVelocity(minecart.getVelocity().multiply(multiplier));
+            
+            // Spawn particles
+            particleHandler.spawnVehicleParticles(minecart, (Player) entity);
         }
     }
 }

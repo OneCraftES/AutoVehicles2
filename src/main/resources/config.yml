@@ -1,8 +1,298 @@
 # +---------------------------------+
-# |       AutoMinecart Config       |
+# |       AutoVehicles Config       |
 # +---------------------------------+
-# Make sure to reload/restart your server for changes to apply.
+# Configuration version - DO NOT MODIFY
+config_version: 1.3.0
 
-# Select which worlds you want AutoMinecart to be disabled in.
+# Make sure to reload/restart your server for changes to apply.
+# Select which worlds you want AutoVehicles to be disabled in.
 disabled_worlds:
   - "example_world"
+
+# Particle Effects Configuration
+particles:
+  # Global toggle for particle effects
+  enabled: true
+  
+  # Default particle style for vehicles (requires autovehicles.particles permission)
+  default_style:
+    minecart:
+      effect: CLOUD
+      amount: 1
+      speed: 0.1
+      offset_x: 0.2
+      offset_y: 0.0
+      offset_z: 0.2
+    boat:
+      effect: WATER_SPLASH
+      amount: 1
+      speed: 0.1
+      offset_x: 0.3
+      offset_y: 0.0
+      offset_z: 0.3
+  
+  # Environmental effects
+  environment:
+    # Underground effect (when blocks are above the vehicle)
+    underground:
+      enabled: true
+      effect: SMOKE_NORMAL
+      amount: 1
+      speed: 0.05
+      offset_x: 0.2
+      offset_y: 0.1
+      offset_z: 0.2
+    
+    # Ice path effect (for boats on ice)
+    ice_path:
+      enabled: true
+      effect: SNOWFLAKE
+      amount: 1
+      speed: 0.1
+      offset_x: 0.2
+      offset_y: 0.0
+      offset_z: 0.2
+    
+    # Biome-specific effects
+    biomes:
+      enabled: true
+      # Desert and Savanna biomes
+      DESERT:
+        effect: CLOUD
+        amount: 2
+        speed: 0.08
+        offset_x: 0.3
+        offset_y: 0.1
+        offset_z: 0.3
+      
+      SAVANNA:
+        effect: CLOUD
+        amount: 2
+        speed: 0.08
+        offset_x: 0.3
+        offset_y: 0.1
+        offset_z: 0.3
+      
+      # Badlands/Mesa biomes
+      BADLANDS:
+        effect: FALLING_DUST
+        amount: 2
+        speed: 0.05
+        offset_x: 0.2
+        offset_y: 0.1
+        offset_z: 0.2
+      
+      # Snowy biomes
+      SNOWY_PLAINS:
+        effect: SNOWFLAKE
+        amount: 1
+        speed: 0.1
+        offset_x: 0.2
+        offset_y: 0.1
+        offset_z: 0.2
+        
+      SNOWY_SLOPES:
+        effect: SNOWFLAKE
+        amount: 2
+        speed: 0.12
+        offset_x: 0.25
+        offset_y: 0.15
+        offset_z: 0.25
+      
+      SNOWY_BEACH:
+        effect: SNOWFLAKE
+        amount: 1
+        speed: 0.08
+        offset_x: 0.2
+        offset_y: 0.1
+        offset_z: 0.2
+      
+      # Frozen biomes
+      FROZEN_OCEAN:
+        effect: SNOWFLAKE
+        amount: 2
+        speed: 0.15
+        offset_x: 0.3
+        offset_y: 0.1
+        offset_z: 0.3
+        
+      FROZEN_RIVER:
+        effect: SNOWFLAKE
+        amount: 1
+        speed: 0.12
+        offset_x: 0.25
+        offset_y: 0.1
+        offset_z: 0.25
+      
+      FROZEN_PEAKS:
+        effect: SNOWFLAKE
+        amount: 3
+        speed: 0.18
+        offset_x: 0.35
+        offset_y: 0.2
+        offset_z: 0.35
+      
+      # Swamp biomes
+      SWAMP:
+        effect: WATER_SPLASH
+        amount: 1
+        speed: 0.05
+        offset_x: 0.2
+        offset_y: 0.0
+        offset_z: 0.2
+        
+      MANGROVE_SWAMP:
+        effect: WATER_SPLASH
+        amount: 2
+        speed: 0.06
+        offset_x: 0.25
+        offset_y: 0.0
+        offset_z: 0.25
+      
+      # Jungle biomes
+      JUNGLE:
+        effect: COMPOSTER
+        amount: 1
+        speed: 0.1
+        offset_x: 0.2
+        offset_y: 0.1
+        offset_z: 0.2
+        
+      SPARSE_JUNGLE:
+        effect: COMPOSTER
+        amount: 1
+        speed: 0.08
+        offset_x: 0.2
+        offset_y: 0.1
+        offset_z: 0.2
+        
+      BAMBOO_JUNGLE:
+        effect: COMPOSTER
+        amount: 2
+        speed: 0.12
+        offset_x: 0.25
+        offset_y: 0.15
+        offset_z: 0.25
+      
+      # Ocean biomes
+      OCEAN:
+        effect: WATER_BUBBLE
+        amount: 2
+        speed: 0.1
+        offset_x: 0.3
+        offset_y: 0.0
+        offset_z: 0.3
+        
+      WARM_OCEAN:
+        effect: WATER_BUBBLE
+        amount: 2
+        speed: 0.12
+        offset_x: 0.3
+        offset_y: 0.0
+        offset_z: 0.3
+        
+      LUKEWARM_OCEAN:
+        effect: WATER_BUBBLE
+        amount: 2
+        speed: 0.11
+        offset_x: 0.3
+        offset_y: 0.0
+        offset_z: 0.3
+        
+      COLD_OCEAN:
+        effect: WATER_BUBBLE
+        amount: 2
+        speed: 0.09
+        offset_x: 0.3
+        offset_y: 0.0
+        offset_z: 0.3
+        
+      DEEP_OCEAN:
+        effect: WATER_BUBBLE
+        amount: 3
+        speed: 0.08
+        offset_x: 0.35
+        offset_y: 0.0
+        offset_z: 0.35
+      
+      # Nether biomes
+      NETHER_WASTES:
+        effect: FLAME
+        amount: 2
+        speed: 0.1
+        offset_x: 0.3
+        offset_y: 0.1
+        offset_z: 0.3
+        
+      SOUL_SAND_VALLEY:
+        effect: SOUL_FIRE_FLAME
+        amount: 2
+        speed: 0.12
+        offset_x: 0.3
+        offset_y: 0.15
+        offset_z: 0.3
+        
+      CRIMSON_FOREST:
+        effect: CRIMSON_SPORE
+        amount: 3
+        speed: 0.1
+        offset_x: 0.3
+        offset_y: 0.2
+        offset_z: 0.3
+        
+      WARPED_FOREST:
+        effect: WARPED_SPORE
+        amount: 3
+        speed: 0.1
+        offset_x: 0.3
+        offset_y: 0.2
+        offset_z: 0.3
+        
+      BASALT_DELTAS:
+        effect: WHITE_ASH
+        amount: 2
+        speed: 0.08
+        offset_x: 0.25
+        offset_y: 0.15
+        offset_z: 0.25
+      
+      # End biomes
+      THE_END:
+        effect: DRAGON_BREATH
+        amount: 2
+        speed: 0.1
+        offset_x: 0.3
+        offset_y: 0.1
+        offset_z: 0.3
+        
+      END_HIGHLANDS:
+        effect: REVERSE_PORTAL
+        amount: 2
+        speed: 0.12
+        offset_x: 0.3
+        offset_y: 0.2
+        offset_z: 0.3
+        
+      END_MIDLANDS:
+        effect: PORTAL
+        amount: 2
+        speed: 0.1
+        offset_x: 0.3
+        offset_y: 0.15
+        offset_z: 0.3
+        
+      SMALL_END_ISLANDS:
+        effect: DRAGON_BREATH
+        amount: 1
+        speed: 0.08
+        offset_x: 0.25
+        offset_y: 0.1
+        offset_z: 0.25
+        
+      END_BARRENS:
+        effect: PORTAL
+        amount: 1
+        speed: 0.09
+        offset_x: 0.25
+        offset_y: 0.1
+        offset_z: 0.25

@@ -2,6 +2,8 @@ package me.tisleo.autominecart;
 
 import me.tisleo.autominecart.commands.CommandToggleBoat;
 import me.tisleo.autominecart.commands.CommandToggleCart;
+import me.tisleo.autominecart.commands.CommandToggleParticles;
+import me.tisleo.autominecart.config.ConfigurationManager;
 import me.tisleo.autominecart.listeners.BoatLeaveHandler;
 import me.tisleo.autominecart.listeners.IceClickHandler;
 import me.tisleo.autominecart.listeners.MinecartLeaveHandler;
@@ -9,7 +11,7 @@ import me.tisleo.autominecart.listeners.PlayerJoinHandler;
 import me.tisleo.autominecart.listeners.RailClickHandler;
 import me.tisleo.autominecart.listeners.VehicleMoveHandler;
 import me.tisleo.autominecart.listeners.WaterClickHandler;
-
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,9 +27,15 @@ public final class AutoMinecart extends JavaPlugin {
     private final ArrayList<Player> minecartUsers = new ArrayList<>();
     private final ArrayList<Player> boatUsers = new ArrayList<>();
 
+    private static AutoMinecart instance;
+    private ConfigurationManager configManager;
+
     @Override
     public void onEnable() {
-        saveDefaultConfig();
+        instance = this;
+
+        // Initialize configuration manager
+        configManager = new ConfigurationManager(this);
 
         try {
             PlayerConfig.initPlayerConfig();
@@ -62,6 +70,7 @@ public final class AutoMinecart extends JavaPlugin {
     private void registerCommands() {
         getCommand("togglecart").setExecutor(new CommandToggleCart());
         getCommand("toggleboat").setExecutor(new CommandToggleBoat());
+        getCommand("toggleparticles").setExecutor(new CommandToggleParticles());
     }
 
     public void addMinecartUser(Player p) {
@@ -86,6 +95,21 @@ public final class AutoMinecart extends JavaPlugin {
 
     public void removeBoatUser(Player p) {
         boatUsers.remove(p);
+    }
+
+    @Override
+    public FileConfiguration getConfig() {
+        return configManager.getConfig();
+    }
+
+    @Override
+    public void saveConfig() {
+        configManager.saveConfig();
+    }
+
+    @Override
+    public void reloadConfig() {
+        configManager.reloadConfig();
     }
 
     @Override
