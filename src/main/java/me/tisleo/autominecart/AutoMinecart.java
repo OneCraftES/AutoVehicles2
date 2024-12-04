@@ -5,6 +5,7 @@ import me.tisleo.autominecart.commands.CommandToggleCart;
 import me.tisleo.autominecart.commands.CommandToggleParticles;
 import me.tisleo.autominecart.config.ConfigurationManager;
 import me.tisleo.autominecart.listeners.BoatLeaveHandler;
+import me.tisleo.autominecart.listeners.BoatMoveHandler;
 import me.tisleo.autominecart.listeners.IceClickHandler;
 import me.tisleo.autominecart.listeners.MinecartLeaveHandler;
 import me.tisleo.autominecart.listeners.PlayerJoinHandler;
@@ -57,6 +58,7 @@ public final class AutoMinecart extends JavaPlugin {
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new RailClickHandler(this), this);
         getServer().getPluginManager().registerEvents(new VehicleMoveHandler(this), this);
+        getServer().getPluginManager().registerEvents(new BoatMoveHandler(this), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinHandler(), this);
         getServer().getPluginManager().registerEvents(new MinecartLeaveHandler(this), this);
         getServer().getPluginManager().registerEvents(new WaterClickHandler(this), this);

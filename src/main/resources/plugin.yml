@@ -1,7 +1,7 @@
-name: AutoVehicles
+name: AutoMinecart
 version: '1.3.0'
 main: me.tisleo.autominecart.AutoMinecart
-api-version: 1.18
+api-version: 1.21
 authors: [ TisLeo ]
 description: A useful plugin that mimics Terraria minecarts and adds custom boats
 
@@ -20,9 +20,12 @@ permissions:
   autominecart.use:
     description: Allows a user to use this plugin
     default: op
-  autovehicles.particles:
+  autominecart.particles:
     description: Allows a user to see particle effects on their vehicles
     default: op
-  autovehicles.particles.toggle:
+  autominecart.particles.environment:
+    description: Allows a user to see environmental and biome-specific particle effects
+    default: op
+  autominecart.particles.toggle:
     description: Allows a user to toggle their vehicle particle effects
     default: op

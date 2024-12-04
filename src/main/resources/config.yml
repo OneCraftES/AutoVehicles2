@@ -18,18 +18,18 @@ particles:
   default_style:
     minecart:
       effect: CLOUD
-      amount: 1
-      speed: 0.1
-      offset_x: 0.2
-      offset_y: 0.0
-      offset_z: 0.2
+      amount: 3
+      speed: 0.05
+      offset_x: 0.3
+      offset_y: 0.2
+      offset_z: 0.3
     boat:
       effect: WATER_SPLASH
-      amount: 1
+      amount: 5
       speed: 0.1
-      offset_x: 0.3
-      offset_y: 0.0
-      offset_z: 0.3
+      offset_x: 0.4
+      offset_y: 0.1
+      offset_z: 0.4
   
   # Environmental effects
   environment:
@@ -37,7 +37,7 @@ particles:
     underground:
       enabled: true
       effect: SMOKE_NORMAL
-      amount: 1
+      amount: 2
       speed: 0.05
       offset_x: 0.2
       offset_y: 0.1
@@ -46,19 +46,29 @@ particles:
     # Ice path effect (for boats on ice)
     ice_path:
       enabled: true
+      # Primary effect - snowflakes
       effect: SNOWFLAKE
-      amount: 1
-      speed: 0.1
-      offset_x: 0.2
-      offset_y: 0.0
-      offset_z: 0.2
+      amount: 8
+      speed: 0.15
+      offset_x: 0.5
+      offset_y: 0.2
+      offset_z: 0.5
+      # Secondary sparkle effect
+      secondary_effect:
+        enabled: true
+        effect: FIREWORKS_SPARK
+        amount: 3
+        speed: 0.1
+        offset_x: 0.4
+        offset_y: 0.15
+        offset_z: 0.4
     
     # Biome-specific effects
     biomes:
       enabled: true
       # Desert and Savanna biomes
       DESERT:
-        effect: CLOUD
+        effect: WAX_ON
         amount: 2
         speed: 0.08
         offset_x: 0.3
@@ -66,7 +76,7 @@ particles:
         offset_z: 0.3
       
       SAVANNA:
-        effect: CLOUD
+        effect: WAX_OFF
         amount: 2
         speed: 0.08
         offset_x: 0.3
@@ -75,16 +85,16 @@ particles:
       
       # Badlands/Mesa biomes
       BADLANDS:
-        effect: FALLING_DUST
-        amount: 2
+        effect: CRIMSON_SPORE
+        amount: 3
         speed: 0.05
-        offset_x: 0.2
-        offset_y: 0.1
-        offset_z: 0.2
+        offset_x: 0.3
+        offset_y: 0.2
+        offset_z: 0.3
       
       # Snowy biomes
       SNOWY_PLAINS:
-        effect: SNOWFLAKE
+        effect: WHITE_ASH
         amount: 1
         speed: 0.1
         offset_x: 0.2
@@ -92,7 +102,7 @@ particles:
         offset_z: 0.2
         
       SNOWY_SLOPES:
-        effect: SNOWFLAKE
+        effect: WHITE_ASH
         amount: 2
         speed: 0.12
         offset_x: 0.25
@@ -100,7 +110,7 @@ particles:
         offset_z: 0.25
       
       SNOWY_BEACH:
-        effect: SNOWFLAKE
+        effect: GLOW
         amount: 1
         speed: 0.08
         offset_x: 0.2
@@ -109,7 +119,7 @@ particles:
       
       # Frozen biomes
       FROZEN_OCEAN:
-        effect: SNOWFLAKE
+        effect: ELECTRIC_SPARK
         amount: 2
         speed: 0.15
         offset_x: 0.3
@@ -117,7 +127,7 @@ particles:
         offset_z: 0.3
         
       FROZEN_RIVER:
-        effect: SNOWFLAKE
+        effect: END_ROD
         amount: 1
         speed: 0.12
         offset_x: 0.25
@@ -125,12 +135,63 @@ particles:
         offset_z: 0.25
       
       FROZEN_PEAKS:
-        effect: SNOWFLAKE
+        effect: SCRAPE
         amount: 3
         speed: 0.18
         offset_x: 0.35
         offset_y: 0.2
         offset_z: 0.35
+      
+      # Stony biomes
+      STONY_PEAKS:
+        effect: CRIT
+        amount: 2
+        speed: 0.1
+        offset_x: 0.3
+        offset_y: 0.2
+        offset_z: 0.3
+
+      STONY_SHORE:
+        effect: FALLING_DUST
+        amount: 1
+        speed: 0.05
+        offset_x: 0.2
+        offset_y: 0.15
+        offset_z: 0.2
+
+      DEEP_DARK:
+        effect: SOUL
+        amount: 2
+        speed: 0.1
+        offset_x: 0.25
+        offset_y: 0.2
+        offset_z: 0.25
+
+      # Mountain peaks
+      JAGGED_PEAKS:
+        effect: FIREWORK
+        amount: 3
+        speed: 0.15
+        offset_x: 0.3
+        offset_y: 0.25
+        offset_z: 0.3
+
+      GROVE:
+        effect: WHITE_ASH
+        amount: 2
+        speed: 0.1
+        offset_x: 0.25
+        offset_y: 0.2
+        offset_z: 0.25
+
+      # Cherry Grove
+      CHERRY_GROVE:
+        effect: END_ROD
+        amount: 4
+        speed: 0.08
+        offset_x: 0.4
+        offset_y: 0.3
+        offset_z: 0.4
       
       # Swamp biomes
       SWAMP:
