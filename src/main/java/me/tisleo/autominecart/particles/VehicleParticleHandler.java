@@ -1,6 +1,7 @@
 package me.tisleo.autominecart.particles;
 
 import me.tisleo.autominecart.AutoMinecart;
+import me.tisleo.autominecart.PlayerConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -188,6 +189,9 @@ public class VehicleParticleHandler {
         if (!plugin.getConfig().getBoolean("particles.enabled")) return;
         
         if (!player.hasPermission("autominecart.particles")) return;
+
+        // Check player's personal particle toggle setting
+        if (!PlayerConfig.getPlayersFileConfig().getBoolean("players." + player.getUniqueId() + ".particles.enabled", true)) return;
 
         Location loc = vehicle.getLocation();
         Block block = loc.getBlock();

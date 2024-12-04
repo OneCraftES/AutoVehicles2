@@ -18,14 +18,22 @@ Originally created to add boat functionality and region-specific permissions for
 - Support for ice paths and water routes
 
 ### Particle Effects System (New in 1.3.0!)
-- Dynamic particle effects for vehicles
-- Biome-specific visual effects
-- Environmental condition detection
+- Dynamic particle effects for vehicles:
+  - Boats: Dynamic effects based on speed and movement
+  - Minecarts: Configurable static effects
+- Environment-aware effects:
+  - Underground detection for minecarts
+  - Ice path detection for boats
+  - Biome-specific particle effects
+- Player-specific settings:
+  - Individual particle toggle with `/toggleparticles`
+  - Settings persist between sessions
+  - Permission-based access to features
 - Fully customizable particle settings:
   - Different effects for minecarts and boats
-  - Adjustable particle speed and spread
-  - Biome-specific particle configurations
-  - Underground and ice path detection
+  - Adjustable particle amount, speed, and spread
+  - Configurable spawn locations and offsets
+  - Environmental effect customization
 
 ### Configuration Management
 - Automatic config version tracking
@@ -78,8 +86,9 @@ The following features are planned or under consideration for future updates:
 
 ## Permissions
 - `autominecart.use` - Access to basic plugin features
-- `autovehicles.particles` - Allows seeing particle effects
-- `autovehicles.particles.toggle` - Allows toggling particle effects
+- `autominecart.particles` - Allows seeing basic particle effects
+- `autominecart.particles.environment` - Allows seeing environmental effects (underground, ice path, biome-specific)
+- `autominecart.particles.toggle` - Allows toggling particle effects
 
 ## Configuration
 
@@ -96,11 +105,53 @@ particles:
   default_style:
     minecart:
       effect: CLOUD
-      amount: 1
-      speed: 0.1
+      amount: 3
+      speed: 0.05
       offset_x: 0.2
-      offset_y: 0.0
+      offset_y: 0.1
       offset_z: 0.2
+      particle_offset: 0.5
+    boat:
+      effect: WATER_SPLASH
+      amount: 5
+      speed: 0.1
+      offset_x: 0.3
+      offset_y: 0.1
+      offset_z: 0.3
+  environment:
+    underground:
+      enabled: true
+      effect: SMOKE_NORMAL
+      amount: 3
+      speed: 0.05
+    ice_path:
+      enabled: true
+      effect: SNOWFLAKE
+      amount: 4
+      speed: 0.1
+    biomes:
+      enabled: true
+      DESERT:
+        effect: FALLING_DUST
+        amount: 3
+        speed: 0.05
+      NETHER:
+        effect: FLAME
+        amount: 4
+        speed: 0.1
+```
+
+### Player Settings
+Player-specific settings are stored in `players.yml`:
+```yaml
+players:
+  uuid:
+    cart:
+      toggled: true
+    boat:
+      toggled: true
+    particles:
+      enabled: true
 ```
 
 ### Configuration Versioning
