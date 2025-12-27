@@ -1,9 +1,9 @@
-# 🚜 AutoVehicles2 v2.0.0
+# AutoVehicles2
 ### Enhanced Vehicle Mechanics for modern Minecraft
 
 AutoVehicles2 is a high-performance, feature-rich fork of the original **[AutoMinecart](https://github.com/TisLeo/AutoMinecart)** plugin by **[TisLeo](https://github.com/TisLeo)**. This version, managed by **OneCraft**, brings significant improvements to stability, performance, and visual effects.
 
-A powerful, high-performance Minecraft (Paper/Spigot) plugin that elevates vehicle mechanics with automatic spawning, persistent tagging, and dynamic particle effects.
+A powerful, high-performance Minecraft (Paper/Spigot) plugin that elevates vehicle mechanics with automatic spawning (terraria-like), persistent tagging, and dynamic particle effects.
 
 ## ✨ Key Features
 
@@ -47,9 +47,9 @@ AutoVehicles2 began as a fork of **AutoMinecart** by **TisLeo**. We are grateful
 
 **OneCraft** has since evolved the project into version 2.0.0, focusing on:
 - **Scalability**: Reliable PDC-based vehicle cleanup.
+- **Aesthetics**: Environment and biome-aware particle systems.
 - **Performance**: High-efficiency particle caching and speed tracking.
-- **Aesthetics**: Expanded environment and biome-aware particle systems.
 
 ---
-© 2025 OneCraft - Performance-First Minecraft Plugins.  
+
 Original project by [TisLeo](https://github.com/TisLeo).
