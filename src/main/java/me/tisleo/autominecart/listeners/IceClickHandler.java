@@ -10,12 +10,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import org.bukkit.persistence.PersistentDataType;
+
 import java.util.Arrays;
 
 public class IceClickHandler implements Listener {
 
     private final AutoMinecart plugin;
-    private static final Material[] validBlocks = {Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE};
+    private static final Material[] validBlocks = { Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE };
 
     public IceClickHandler(AutoMinecart plugin) {
         this.plugin = plugin;
@@ -34,20 +36,21 @@ public class IceClickHandler implements Listener {
         spawnLocation.setPitch(p.getLocation().getPitch());
 
         Boat boat = p.getWorld().spawn(spawnLocation, OakBoat.class);
-        plugin.addBoatUser(p);
+        boat.getPersistentDataContainer().set(plugin.getVehicleKey(), PersistentDataType.BYTE, (byte) 1);
         boat.addPassenger(p);
     }
 
-
     /**
-     * Checks whether the player is valid to create and use a new AutoMinecart. To be valid, the player must:
+     * Checks whether the player is valid to create and use a new AutoMinecart. To
+     * be valid, the player must:
      * <ol>
-     *     <li>Be inside a world where the plugin is enabled</li>
-     *     <li>Have permission to use the plugin</li>
-     *     <li>Have the plugin toggled on for them (/togglecart command)</li>
-     *     <li>Not be inside a vehicle</li>
-     *     <li>Have right-clicked a valid rail with an empty main hand</li>
+     * <li>Be inside a world where the plugin is enabled</li>
+     * <li>Have permission to use the plugin</li>
+     * <li>Have the plugin toggled on for them (/togglecart command)</li>
+     * <li>Not be inside a vehicle</li>
+     * <li>Have right-clicked a valid rail with an empty main hand</li>
      * </ol>
+     * 
      * @param p the player
      * @return whether the player is valid to create and use a new AutoMinecart.
      */
@@ -56,8 +59,8 @@ public class IceClickHandler implements Listener {
                 && (p.isOp() || p.hasPermission("autominecart.use"))
                 && (PlayerConfig.getPlayersFileConfig().getBoolean("players." + p.getUniqueId() + ".boat.toggled"))
                 && !p.isInsideVehicle()
-                && (e.getAction() == Action.RIGHT_CLICK_BLOCK && Arrays.asList(validBlocks).contains(e.getClickedBlock().getType()) && p.getInventory().getItemInMainHand().getType().equals(Material.AIR));
+                && (e.getAction() == Action.RIGHT_CLICK_BLOCK
+                        && Arrays.asList(validBlocks).contains(e.getClickedBlock().getType())
+                        && p.getInventory().getItemInMainHand().getType().equals(Material.AIR));
     }
 }
-
-

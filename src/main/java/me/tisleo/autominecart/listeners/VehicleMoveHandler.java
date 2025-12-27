@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 public class VehicleMoveHandler implements Listener {
@@ -29,13 +30,14 @@ public class VehicleMoveHandler implements Listener {
         }
 
         for (Entity entity : e.getVehicle().getPassengers()) {
-            if (!(entity instanceof Player && plugin.getMinecartUsers().contains(entity))) {
+            if (!(entity instanceof Player && e.getVehicle().getPersistentDataContainer().has(plugin.getVehicleKey(),
+                    PersistentDataType.BYTE))) {
                 return;
             }
 
             Minecart minecart = (Minecart) e.getVehicle();
             minecart.setVelocity(minecart.getVelocity().multiply(multiplier));
-            
+
             // Spawn particles
             particleHandler.spawnVehicleParticles(minecart, (Player) entity);
         }

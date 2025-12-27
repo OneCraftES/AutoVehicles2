@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import org.bukkit.persistence.PersistentDataType;
+
 import java.util.List;
 
 public class WaterClickHandler implements Listener {
@@ -35,7 +37,7 @@ public class WaterClickHandler implements Listener {
         blockLocation.setPitch(p.getLocation().getPitch());
 
         Boat boat = p.getWorld().spawn(blockLocation, OakBoat.class);
-        plugin.addBoatUser(p);
+        boat.getPersistentDataContainer().set(plugin.getVehicleKey(), PersistentDataType.BYTE, (byte) 1);
         boat.addPassenger(p);
     }
 

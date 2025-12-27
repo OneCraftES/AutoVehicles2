@@ -12,28 +12,20 @@ import me.tisleo.autominecart.listeners.PlayerJoinHandler;
 import me.tisleo.autominecart.listeners.RailClickHandler;
 import me.tisleo.autominecart.listeners.VehicleMoveHandler;
 import me.tisleo.autominecart.listeners.WaterClickHandler;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 
 public final class AutoMinecart extends JavaPlugin {
 
-    /**
-     * A list of players currently inside an AutoMinecart
-     */
-    private final ArrayList<Player> minecartUsers = new ArrayList<>();
-    private final ArrayList<Player> boatUsers = new ArrayList<>();
-
-    private static AutoMinecart instance;
     private ConfigurationManager configManager;
+    private NamespacedKey vehicleKey;
 
     @Override
     public void onEnable() {
-        instance = this;
+        vehicleKey = new NamespacedKey(this, "is_autovehicle");
 
         // Initialize configuration manager
         configManager = new ConfigurationManager(this);
@@ -75,28 +67,8 @@ public final class AutoMinecart extends JavaPlugin {
         getCommand("toggleparticles").setExecutor(new CommandToggleParticles());
     }
 
-    public void addMinecartUser(Player p) {
-        minecartUsers.add(p);
-    }
-
-    public void addBoatUser(Player p) {
-        boatUsers.add(p);
-    }
-
-    public ArrayList<Player> getMinecartUsers() {
-        return this.minecartUsers;
-    }
-
-    public ArrayList<Player> getBoatUsers() {
-        return this.boatUsers;
-    }
-
-    public void removeMinecartUser(Player p) {
-        minecartUsers.remove(p);
-    }
-
-    public void removeBoatUser(Player p) {
-        boatUsers.remove(p);
+    public NamespacedKey getVehicleKey() {
+        return vehicleKey;
     }
 
     @Override

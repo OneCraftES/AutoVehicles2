@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
+import org.bukkit.persistence.PersistentDataType;
 
 public class BoatMoveHandler implements Listener {
 
@@ -28,7 +29,8 @@ public class BoatMoveHandler implements Listener {
 
         Boat boat = (Boat) e.getVehicle();
         for (Entity entity : boat.getPassengers()) {
-            if (entity instanceof Player && plugin.getBoatUsers().contains(entity)) {
+            if (entity instanceof Player
+                    && boat.getPersistentDataContainer().has(plugin.getVehicleKey(), PersistentDataType.BYTE)) {
                 // Only spawn particles, don't modify speed
                 particleHandler.spawnVehicleParticles(boat, (Player) entity);
                 break; // Found a valid player, no need to check others

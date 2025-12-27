@@ -11,10 +11,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Arrays;
 
+import org.bukkit.persistence.PersistentDataType;
+
 public class RailClickHandler implements Listener {
 
     private final AutoMinecart plugin;
-    private static final Material[] validRails = {Material.RAIL, Material.DETECTOR_RAIL, Material.POWERED_RAIL};
+    private static final Material[] validRails = { Material.RAIL, Material.DETECTOR_RAIL, Material.POWERED_RAIL };
 
     public RailClickHandler(AutoMinecart plugin) {
         this.plugin = plugin;
@@ -29,19 +31,21 @@ public class RailClickHandler implements Listener {
         }
 
         Minecart minecart = p.getWorld().spawn(e.getClickedBlock().getLocation(), Minecart.class);
-        plugin.addMinecartUser(p);
+        minecart.getPersistentDataContainer().set(plugin.getVehicleKey(), PersistentDataType.BYTE, (byte) 1);
         minecart.addPassenger(p);
     }
 
     /**
-     * Checks whether the player is valid to create and use a new AutoMinecart. To be valid, the player must:
+     * Checks whether the player is valid to create and use a new AutoMinecart. To
+     * be valid, the player must:
      * <ol>
-     *     <li>Be inside a world where the plugin is enabled</li>
-     *     <li>Have permission to use the plugin</li>
-     *     <li>Have the plugin toggled on for them (/togglecart command)</li>
-     *     <li>Not be inside a vehicle</li>
-     *     <li>Have right-clicked a valid rail with an empty main hand</li>
+     * <li>Be inside a world where the plugin is enabled</li>
+     * <li>Have permission to use the plugin</li>
+     * <li>Have the plugin toggled on for them (/togglecart command)</li>
+     * <li>Not be inside a vehicle</li>
+     * <li>Have right-clicked a valid rail with an empty main hand</li>
      * </ol>
+     * 
      * @param p the player
      * @return whether the player is valid to create and use a new AutoMinecart.
      */
@@ -50,9 +54,9 @@ public class RailClickHandler implements Listener {
                 && (p.isOp() || p.hasPermission("autominecart.use"))
                 && (PlayerConfig.getPlayersFileConfig().getBoolean("players." + p.getUniqueId() + ".cart.toggled"))
                 && !p.isInsideVehicle()
-                && (e.getAction() == Action.RIGHT_CLICK_BLOCK && Arrays.asList(validRails).contains(e.getClickedBlock().getType()) && p.getInventory().getItemInMainHand().getType().equals(Material.AIR));
+                && (e.getAction() == Action.RIGHT_CLICK_BLOCK
+                        && Arrays.asList(validRails).contains(e.getClickedBlock().getType())
+                        && p.getInventory().getItemInMainHand().getType().equals(Material.AIR));
     }
 
 }
-
-
