@@ -1,7 +1,7 @@
-package me.tisleo.autominecart.listeners;
+package me.onecraft.autovehicles2.listeners;
 
-import me.tisleo.autominecart.AutoMinecart;
-import me.tisleo.autominecart.PlayerConfig;
+import me.onecraft.autovehicles2.AutoVehicles2;
+import me.onecraft.autovehicles2.PlayerConfig;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -15,10 +15,10 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class RailClickHandler implements Listener {
 
-    private final AutoMinecart plugin;
+    private final AutoVehicles2 plugin;
     private static final Material[] validRails = { Material.RAIL, Material.DETECTOR_RAIL, Material.POWERED_RAIL };
 
-    public RailClickHandler(AutoMinecart plugin) {
+    public RailClickHandler(AutoVehicles2 plugin) {
         this.plugin = plugin;
     }
 
@@ -36,7 +36,7 @@ public class RailClickHandler implements Listener {
     }
 
     /**
-     * Checks whether the player is valid to create and use a new AutoMinecart. To
+     * Checks whether the player is valid to create and use a new AutoVehicles2. To
      * be valid, the player must:
      * <ol>
      * <li>Be inside a world where the plugin is enabled</li>
@@ -47,11 +47,11 @@ public class RailClickHandler implements Listener {
      * </ol>
      * 
      * @param p the player
-     * @return whether the player is valid to create and use a new AutoMinecart.
+     * @return whether the player is valid to create and use a new AutoVehicles2.
      */
     private boolean manageValidity(Player p, PlayerInteractEvent e) {
         return !plugin.getConfig().getStringList("disabled_worlds").contains(p.getWorld().getName())
-                && (p.isOp() || p.hasPermission("autominecart.use"))
+                && (p.isOp() || p.hasPermission("autovehicles2.use"))
                 && (PlayerConfig.getPlayersFileConfig().getBoolean("players." + p.getUniqueId() + ".cart.toggled"))
                 && !p.isInsideVehicle()
                 && (e.getAction() == Action.RIGHT_CLICK_BLOCK

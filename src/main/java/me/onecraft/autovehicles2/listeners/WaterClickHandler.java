@@ -1,7 +1,7 @@
-package me.tisleo.autominecart.listeners;
+package me.onecraft.autovehicles2.listeners;
 
-import me.tisleo.autominecart.AutoMinecart;
-import me.tisleo.autominecart.PlayerConfig;
+import me.onecraft.autovehicles2.AutoVehicles2;
+import me.onecraft.autovehicles2.PlayerConfig;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -18,9 +18,9 @@ import java.util.List;
 
 public class WaterClickHandler implements Listener {
 
-    private final AutoMinecart plugin;
+    private final AutoVehicles2 plugin;
 
-    public WaterClickHandler(AutoMinecart plugin) {
+    public WaterClickHandler(AutoVehicles2 plugin) {
         this.plugin = plugin;
     }
 
@@ -42,7 +42,7 @@ public class WaterClickHandler implements Listener {
     }
 
     /**
-     * Checks whether the player is valid to create and use a new AutoMinecart. To
+     * Checks whether the player is valid to create and use a new AutoVehicles2. To
      * be valid, the player must:
      * <ol>
      * <li>Be inside a world where the plugin is enabled</li>
@@ -53,12 +53,12 @@ public class WaterClickHandler implements Listener {
      * </ol>
      * 
      * @param p the player
-     * @return whether the player is valid to create and use a new AutoMinecart.
+     * @return whether the player is valid to create and use a new AutoVehicles2.
      */
     private boolean isWater(PlayerInteractEvent e, Player p) {
         if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR)
                 && !plugin.getConfig().getStringList("disabled_worlds").contains(p.getWorld().getName())
-                && (p.isOp() || p.hasPermission("autominecart.use"))
+                && (p.isOp() || p.hasPermission("autovehicles2.use"))
                 && (PlayerConfig.getPlayersFileConfig().getBoolean("players." + p.getUniqueId() + ".boat.toggled"))
                 && !p.isInsideVehicle()
                 && p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {

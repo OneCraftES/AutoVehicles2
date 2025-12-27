@@ -1,31 +1,33 @@
-package me.tisleo.autominecart;
+package me.onecraft.autovehicles2;
 
-import me.tisleo.autominecart.commands.CommandToggleBoat;
-import me.tisleo.autominecart.commands.CommandToggleCart;
-import me.tisleo.autominecart.commands.CommandToggleParticles;
-import me.tisleo.autominecart.config.ConfigurationManager;
-import me.tisleo.autominecart.listeners.BoatLeaveHandler;
-import me.tisleo.autominecart.listeners.BoatMoveHandler;
-import me.tisleo.autominecart.listeners.IceClickHandler;
-import me.tisleo.autominecart.listeners.MinecartLeaveHandler;
-import me.tisleo.autominecart.listeners.PlayerJoinHandler;
-import me.tisleo.autominecart.listeners.RailClickHandler;
-import me.tisleo.autominecart.listeners.VehicleMoveHandler;
-import me.tisleo.autominecart.listeners.WaterClickHandler;
+import me.onecraft.autovehicles2.commands.CommandToggleBoat;
+import me.onecraft.autovehicles2.commands.CommandToggleCart;
+import me.onecraft.autovehicles2.commands.CommandToggleParticles;
+import me.onecraft.autovehicles2.config.ConfigurationManager;
+import me.onecraft.autovehicles2.listeners.BoatLeaveHandler;
+import me.onecraft.autovehicles2.listeners.BoatMoveHandler;
+import me.onecraft.autovehicles2.listeners.IceClickHandler;
+import me.onecraft.autovehicles2.listeners.MinecartLeaveHandler;
+import me.onecraft.autovehicles2.listeners.PlayerJoinHandler;
+import me.onecraft.autovehicles2.listeners.RailClickHandler;
+import me.onecraft.autovehicles2.listeners.VehicleMoveHandler;
+import me.onecraft.autovehicles2.listeners.WaterClickHandler;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public final class AutoMinecart extends JavaPlugin {
+public final class AutoVehicles2 extends JavaPlugin {
 
     private ConfigurationManager configManager;
     private NamespacedKey vehicleKey;
+    private me.onecraft.autovehicles2.particles.VehicleParticleHandler particleHandler;
 
     @Override
     public void onEnable() {
         vehicleKey = new NamespacedKey(this, "is_autovehicle");
+        particleHandler = new me.onecraft.autovehicles2.particles.VehicleParticleHandler(this);
 
         // Initialize configuration manager
         configManager = new ConfigurationManager(this);
@@ -35,8 +37,8 @@ public final class AutoMinecart extends JavaPlugin {
             PlayerConfig.getPlayersFileConfig().options().copyDefaults(true);
             PlayerConfig.savePlayerConfig();
         } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "There was an error creating the AutoMinecart player file. " +
-                    "Please try to reload the plugin/server, or contact the developer under the 'Help' section at https://github.com/TisLeo/AutoMinecart");
+            getLogger().log(Level.SEVERE, "There was an error creating the AutoVehicles2 player file. " +
+                    "Please try to reload the plugin/server, or contact the developer under the 'Help' section at https://github.com/OneCraft/AutoVehicles2");
             getPluginLoader().disablePlugin(this);
         }
 
@@ -71,6 +73,10 @@ public final class AutoMinecart extends JavaPlugin {
         return vehicleKey;
     }
 
+    public me.onecraft.autovehicles2.particles.VehicleParticleHandler getParticleHandler() {
+        return particleHandler;
+    }
+
     @Override
     public FileConfiguration getConfig() {
         return configManager.getConfig();
@@ -84,10 +90,13 @@ public final class AutoMinecart extends JavaPlugin {
     @Override
     public void reloadConfig() {
         configManager.reloadConfig();
+        if (particleHandler != null) {
+            particleHandler.clearCache();
+        }
     }
 
     @Override
     public void onDisable() {
-        getLogger().log(Level.INFO, "AutoMinecart has been disabled!");
+        getLogger().log(Level.INFO, "AutoVehicles2 has been disabled!");
     }
 }

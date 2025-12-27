@@ -1,6 +1,6 @@
-package me.tisleo.autominecart.listeners;
+package me.onecraft.autovehicles2.listeners;
 
-import me.tisleo.autominecart.AutoMinecart;
+import me.onecraft.autovehicles2.AutoVehicles2;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,9 +10,9 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class MinecartLeaveHandler implements Listener {
 
-    private final AutoMinecart plugin;
+    private final AutoVehicles2 plugin;
 
-    public MinecartLeaveHandler(AutoMinecart plugin) {
+    public MinecartLeaveHandler(AutoVehicles2 plugin) {
         this.plugin = plugin;
     }
 
@@ -22,16 +22,9 @@ public class MinecartLeaveHandler implements Listener {
             return;
         }
 
-        final Player p = ((Player) e.getExited()).getPlayer();
         if (e.getVehicle().getPersistentDataContainer().has(plugin.getVehicleKey(), PersistentDataType.BYTE)) {
+            plugin.getParticleHandler().removeVehicleState(e.getVehicle().getUniqueId());
             e.getVehicle().remove();
-
-            /*
-             * Need to teleport player half a block upwards because sometimes when a player
-             * exits the minecart,
-             * they get stuck halfway inside the block under them.
-             */
-            p.teleport(p.getLocation().add(0, 0.5, 0));
         }
     }
 }

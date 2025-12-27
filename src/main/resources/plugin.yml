@@ -1,9 +1,9 @@
-name: AutoMinecart
-version: '1.3.0'
-main: me.tisleo.autominecart.AutoMinecart
+name: AutoVehicles2
+version: '2.0.0'
+main: me.onecraft.autovehicles2.AutoVehicles2
 api-version: 1.21
-authors: [ TisLeo ]
-description: A useful plugin that mimics Terraria minecarts and adds custom boats
+authors: [ OneCraft ]
+description: A powerful plugin that enhances vehicles with automatic spawning and reliable cleanup.
 
 commands:
   togglecart:
@@ -17,15 +17,15 @@ commands:
     usage: /toggleparticles
 
 permissions:
-  autominecart.use:
+  autovehicles2.use:
     description: Allows a user to use this plugin
     default: op
-  autominecart.particles:
+  autovehicles2.particles:
     description: Allows a user to see particle effects on their vehicles
     default: op
-  autominecart.particles.environment:
+  autovehicles2.particles.environment:
     description: Allows a user to see environmental and biome-specific particle effects
     default: op
-  autominecart.particles.toggle:
+  autovehicles2.particles.toggle:
     description: Allows a user to toggle their vehicle particle effects
     default: op

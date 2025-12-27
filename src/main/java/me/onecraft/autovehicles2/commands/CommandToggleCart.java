@@ -1,6 +1,6 @@
-package me.tisleo.autominecart.commands;
+package me.onecraft.autovehicles2.commands;
 
-import me.tisleo.autominecart.PlayerConfig;
+import me.onecraft.autovehicles2.PlayerConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,13 +22,13 @@ public class CommandToggleCart implements CommandExecutor {
             PlayerConfig.savePlayerConfig();
             PlayerConfig.reloadPlayerConfig();
 
-            sender.sendMessage(ChatColor.YELLOW + "AutoMinecart has now been " + ChatColor.RED + "disabled" + ChatColor.YELLOW + " for you!");
+            sender.sendMessage(ChatColor.YELLOW + "AutoVehicles2 has now been " + ChatColor.RED + "disabled" + ChatColor.YELLOW + " for you!");
         } else {
             PlayerConfig.getPlayersFileConfig().set("players."+((Player) sender).getUniqueId()+".cart.toggled", true);
             PlayerConfig.savePlayerConfig();
             PlayerConfig.reloadPlayerConfig();
 
-            sender.sendMessage(ChatColor.YELLOW + "AutoMinecart has now been " + ChatColor.GREEN + "enabled" + ChatColor.YELLOW + " for you!");
+            sender.sendMessage(ChatColor.YELLOW + "AutoVehicles2 has now been " + ChatColor.GREEN + "enabled" + ChatColor.YELLOW + " for you!");
         }
 
         return true;
@@ -40,7 +40,7 @@ public class CommandToggleCart implements CommandExecutor {
      * <ol>
      *     <li>Be a player</li>
      *     <li>Use the correct command ("/togglecart")</li>
-     *     <li>Have permission to use the command (autominecart.use) or have OP</li>
+     *     <li>Have permission to use the command (autovehicles2.use) or have OP</li>
      * </ol>
      * @param command the command
      * @param sender the command sender
@@ -52,7 +52,7 @@ public class CommandToggleCart implements CommandExecutor {
         } else if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "Only players can use the /togglecart command!");
             return false;
-        } else if (!sender.hasPermission("autominecart.use") && !sender.isOp()) {
+        } else if (!sender.hasPermission("autovehicles2.use") && !sender.isOp()) {
             sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
             return false;
         }

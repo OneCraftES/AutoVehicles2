@@ -1,4 +1,4 @@
-package me.tisleo.autominecart;
+package me.onecraft.autovehicles2;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,10 +15,10 @@ public class PlayerConfig {
 
     private static File playersFile;
     private static FileConfiguration playersFileConfig;
-    private static final Plugin plugin = AutoMinecart.getPlugin(AutoMinecart.class);
+    private static final Plugin plugin = AutoVehicles2.getPlugin(AutoVehicles2.class);
 
     public static void initPlayerConfig() throws IOException {
-        playersFile = new File(plugin.getServer().getPluginManager().getPlugin("AutoMinecart").getDataFolder(), "players.yml");
+        playersFile = new File(plugin.getServer().getPluginManager().getPlugin("AutoVehicles2").getDataFolder(), "players.yml");
 
         if (!playersFile.exists()) {
             playersFile.createNewFile();
@@ -47,8 +47,8 @@ public class PlayerConfig {
         try {
             playersFileConfig.save(playersFile);
         } catch (IOException e) {
-            plugin.getLogger().log(Level.SEVERE, "There was an error saving the AutoMinecart player file. " +
-                    "Please try to reload the plugin/server, or contact the developer under the 'Help' section at https://github.com/TisLeo/AutoMinecart");
+            plugin.getLogger().log(Level.SEVERE, "There was an error saving the AutoVehicles2 player file. " +
+                    "Please try to reload the plugin/server, or contact the developer under the 'Help' section at https://github.com/OneCraft/AutoVehicles2");
         }
     }
 }

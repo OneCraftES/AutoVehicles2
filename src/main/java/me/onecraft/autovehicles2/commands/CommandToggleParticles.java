@@ -1,6 +1,6 @@
-package me.tisleo.autominecart.commands;
+package me.onecraft.autovehicles2.commands;
 
-import me.tisleo.autominecart.PlayerConfig;
+import me.onecraft.autovehicles2.PlayerConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

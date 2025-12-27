@@ -1,6 +1,6 @@
-package me.tisleo.autominecart.listeners;
+package me.onecraft.autovehicles2.listeners;
 
-import me.tisleo.autominecart.PlayerConfig;
+import me.onecraft.autovehicles2.PlayerConfig;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

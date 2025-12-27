@@ -1,4 +1,4 @@
-package me.tisleo.autominecart.config;
+package me.onecraft.autovehicles2.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,7 +15,7 @@ public class ConfigurationManager {
     private final Plugin plugin;
     private FileConfiguration config;
     private File configFile;
-    private static final String CURRENT_VERSION = "1.3.0";
+    private static final String CURRENT_VERSION = "2.0.0";
 
     public ConfigurationManager(Plugin plugin) {
         this.plugin = plugin;
@@ -62,7 +62,7 @@ public class ConfigurationManager {
 
         // Create new config with default values
         FileConfiguration newConfig = YamlConfiguration.loadConfiguration(configFile);
-        
+
         // Transfer old values that should be kept
         transferOldValues(oldVersion, config, newConfig);
 

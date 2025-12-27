@@ -1,8 +1,6 @@
-package me.tisleo.autominecart.listeners;
+package me.onecraft.autovehicles2.listeners;
 
-import me.tisleo.autominecart.AutoMinecart;
-import me.tisleo.autominecart.particles.VehicleParticleHandler;
-
+import me.onecraft.autovehicles2.AutoVehicles2;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,12 +11,10 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class BoatMoveHandler implements Listener {
 
-    private final AutoMinecart plugin;
-    private final VehicleParticleHandler particleHandler;
+    private final AutoVehicles2 plugin;
 
-    public BoatMoveHandler(AutoMinecart plugin) {
+    public BoatMoveHandler(AutoVehicles2 plugin) {
         this.plugin = plugin;
-        this.particleHandler = new VehicleParticleHandler(plugin);
     }
 
     @EventHandler
@@ -32,7 +28,7 @@ public class BoatMoveHandler implements Listener {
             if (entity instanceof Player
                     && boat.getPersistentDataContainer().has(plugin.getVehicleKey(), PersistentDataType.BYTE)) {
                 // Only spawn particles, don't modify speed
-                particleHandler.spawnVehicleParticles(boat, (Player) entity);
+                plugin.getParticleHandler().spawnVehicleParticles(boat, (Player) entity);
                 break; // Found a valid player, no need to check others
             }
         }
