@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Minecart;
@@ -102,45 +103,47 @@ public class VehicleParticleHandler {
         Location loc = vehicle.getLocation();
         Block block = loc.getBlock();
 
+        Block blockBelow = loc.clone().subtract(0, 1, 0).getBlock();
+        BlockData blockData = blockBelow.getBlockData();
+
         // 1. Core Vehicle Particles
         if (vehicle instanceof Boat) {
-            handleBoatParticles(vehicle, player, speed, maxSpeed, loc, block);
+            handleBoatParticles(vehicle, player, speed, maxSpeed, loc, block, blockData);
         } else if (vehicle instanceof Minecart) {
-            handleMinecartParticles(vehicle, player, loc);
+            handleMinecartParticles(vehicle, player, loc, blockData);
         }
 
         // 2. Biome Particles
         if (plugin.getConfig().getBoolean("particles.environment.biomes.enabled", true) &&
                 (player.isOp() || player.hasPermission("autovehicles2.particles.environment"))) {
-            handleBiomeParticles(vehicle, block, loc);
+            handleBiomeParticles(vehicle, block, loc, blockData);
         }
     }
 
     private void handleBoatParticles(Vehicle vehicle, Player player, double speed, double maxSpeed, Location loc,
-            Block block) {
-        Block blockBelow = loc.clone().subtract(0, 1, 0).getBlock();
-        boolean onIce = blockBelow.getType().name().contains("ICE") || block.getType().name().contains("ICE");
+            Block block, BlockData blockData) {
+        boolean onIce = blockData.getMaterial().name().contains("ICE") || block.getType().name().contains("ICE");
 
         if (onIce && (player.isOp() || player.hasPermission("autovehicles2.particles.environment"))) {
             if (plugin.getConfig().getBoolean("particles.environment.ice_path.enabled", true)) {
-                spawnDynamicParticle(vehicle, "particles.environment.ice_path", loc, speed, maxSpeed);
+                spawnDynamicParticle(vehicle, "particles.environment.ice_path", loc, speed, maxSpeed, blockData);
             }
         } else {
-            spawnDynamicParticle(vehicle, "particles.default_style.boat", loc, speed, maxSpeed);
+            spawnDynamicParticle(vehicle, "particles.default_style.boat", loc, speed, maxSpeed, blockData);
         }
     }
 
-    private void handleMinecartParticles(Vehicle vehicle, Player player, Location loc) {
-        spawnStaticParticle(vehicle, "particles.default_style.minecart", loc);
+    private void handleMinecartParticles(Vehicle vehicle, Player player, Location loc, BlockData blockData) {
+        spawnStaticParticle(vehicle, "particles.default_style.minecart", loc, blockData);
 
         if (plugin.getConfig().getBoolean("particles.environment.underground.enabled", true) &&
                 (player.isOp() || player.hasPermission("autovehicles2.particles.environment")) &&
                 loc.clone().add(0, 2, 0).getBlock().getType().isSolid()) {
-            spawnStaticParticle(vehicle, "particles.environment.underground", loc);
+            spawnStaticParticle(vehicle, "particles.environment.underground", loc, blockData);
         }
     }
 
-    private void handleBiomeParticles(Vehicle vehicle, Block block, Location loc) {
+    private void handleBiomeParticles(Vehicle vehicle, Block block, Location loc, BlockData blockData) {
         String biomeName = block.getBiome().name();
         ConfigurationSection biomesSection = plugin.getConfig().getConfigurationSection("particles.environment.biomes");
 
@@ -152,9 +155,10 @@ public class VehicleParticleHandler {
                     if (vehicle instanceof Boat) {
                         double speed = getCalculatedSpeed(vehicle);
                         double maxSpeed = getMaxSpeed(vehicle);
-                        spawnDynamicParticle(vehicle, "particles.environment.biomes." + category, loc, speed, maxSpeed);
+                        spawnDynamicParticle(vehicle, "particles.environment.biomes." + category, loc, speed, maxSpeed,
+                                blockData);
                     } else {
-                        spawnStaticParticle(vehicle, "particles.environment.biomes." + category, loc);
+                        spawnStaticParticle(vehicle, "particles.environment.biomes." + category, loc, blockData);
                     }
                     break;
                 }
@@ -244,7 +248,8 @@ public class VehicleParticleHandler {
         });
     }
 
-    private void spawnDynamicParticle(Vehicle vehicle, String path, Location location, double speed, double maxSpeed) {
+    private void spawnDynamicParticle(Vehicle vehicle, String path, Location location, double speed, double maxSpeed,
+            BlockData blockData) {
         ParticleParams params = getParams(path);
         if (params == null)
             return;
@@ -255,12 +260,21 @@ public class VehicleParticleHandler {
 
         Location spawnLoc = calculateSpawnLoc(vehicle, speed, maxSpeed);
 
-        location.getWorld().spawnParticle(
-                params.effect, spawnLoc, adjustedAmount,
-                params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed);
+        if (params.effect.getDataType() == BlockData.class) {
+            if (blockData.getMaterial().isAir()) {
+                blockData = Material.STONE.createBlockData();
+            }
+            location.getWorld().spawnParticle(
+                    params.effect, spawnLoc, adjustedAmount,
+                    params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed, blockData);
+        } else {
+            location.getWorld().spawnParticle(
+                    params.effect, spawnLoc, adjustedAmount,
+                    params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed);
+        }
     }
 
-    private void spawnStaticParticle(Vehicle vehicle, String path, Location location) {
+    private void spawnStaticParticle(Vehicle vehicle, String path, Location location, BlockData blockData) {
         ParticleParams params = getParams(path);
         if (params == null)
             return;
@@ -271,9 +285,18 @@ public class VehicleParticleHandler {
             spawnLoc.add(direction.multiply(-params.particleOffset));
         }
 
-        location.getWorld().spawnParticle(
-                params.effect, spawnLoc, params.amount,
-                params.offsetX, params.offsetY, params.offsetZ, params.speed);
+        if (params.effect.getDataType() == BlockData.class) {
+            if (blockData.getMaterial().isAir()) {
+                blockData = Material.STONE.createBlockData();
+            }
+            location.getWorld().spawnParticle(
+                    params.effect, spawnLoc, params.amount,
+                    params.offsetX, params.offsetY, params.offsetZ, params.speed, blockData);
+        } else {
+            location.getWorld().spawnParticle(
+                    params.effect, spawnLoc, params.amount,
+                    params.offsetX, params.offsetY, params.offsetZ, params.speed);
+        }
     }
 
     private Location calculateSpawnLoc(Vehicle vehicle, double speed, double maxSpeed) {
