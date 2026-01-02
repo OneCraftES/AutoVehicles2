@@ -1,6 +1,7 @@
 package me.onecraft.autovehicles2.listeners;
 
 import me.onecraft.autovehicles2.AutoVehicles2;
+import org.bukkit.Location;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +24,10 @@ public class MinecartLeaveHandler implements Listener {
         }
 
         if (e.getVehicle().getPersistentDataContainer().has(plugin.getVehicleKey(), PersistentDataType.BYTE)) {
+            // Teleport player to a safe location to avoid clipping
+            Location safeLocation = e.getVehicle().getLocation().add(0, 0.5, 0);
+            e.getExited().teleport(safeLocation);
+
             plugin.getParticleHandler().removeVehicleState(e.getVehicle().getUniqueId());
             e.getVehicle().remove();
         }
