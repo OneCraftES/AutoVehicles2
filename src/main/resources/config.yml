@@ -2,7 +2,14 @@
 # |       AutoVehicles2 Config      |
 # +---------------------------------+
 # Configuration version - DO NOT MODIFY
-config_version: 2.0.0
+config_version: 2.1.0
+
+# Settings for Vehicle Behavior
+settings:
+  # Should vehicles be allowed to travel through portals?
+  # If true, vehicles entering portals (Nether, End, Multiverse) will NOT be removed.
+  # If false, they will be removed upon exit (if possible).
+  allow_portal_travel: true
 
 # Make sure to reload/restart your server for changes to apply.
 # Select which worlds you want AutoVehicles to be disabled in.

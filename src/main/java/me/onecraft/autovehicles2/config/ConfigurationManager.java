@@ -15,7 +15,7 @@ public class ConfigurationManager {
     private final Plugin plugin;
     private FileConfiguration config;
     private File configFile;
-    private static final String CURRENT_VERSION = "2.0.0";
+    private static final String CURRENT_VERSION = "2.1.0";
 
     public ConfigurationManager(Plugin plugin) {
         this.plugin = plugin;
@@ -61,7 +61,7 @@ public class ConfigurationManager {
         }
 
         // Create new config with default values
-        FileConfiguration newConfig = YamlConfiguration.loadConfiguration(configFile);
+        FileConfiguration newConfig = YamlConfiguration.loadConfiguration(new java.io.InputStreamReader(defaultConfig));
 
         // Transfer old values that should be kept
         transferOldValues(oldVersion, config, newConfig);

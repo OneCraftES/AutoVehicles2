@@ -23,6 +23,8 @@ public final class AutoVehicles2 extends JavaPlugin {
     private ConfigurationManager configManager;
     private NamespacedKey vehicleKey;
     private me.onecraft.autovehicles2.particles.VehicleParticleHandler particleHandler;
+    private final java.util.Set<java.util.UUID> teleportingPlayers = new java.util.HashSet<>();
+    private final java.util.Set<java.util.UUID> transitioningVehicles = new java.util.HashSet<>();
 
     @Override
     public void onEnable() {
@@ -58,6 +60,8 @@ public final class AutoVehicles2 extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new WaterClickHandler(this), this);
         getServer().getPluginManager().registerEvents(new IceClickHandler(this), this);
         getServer().getPluginManager().registerEvents(new BoatLeaveHandler(this), this);
+        getServer().getPluginManager().registerEvents(new me.onecraft.autovehicles2.listeners.PortalListener(this),
+                this);
     }
 
     /**
@@ -75,6 +79,14 @@ public final class AutoVehicles2 extends JavaPlugin {
 
     public me.onecraft.autovehicles2.particles.VehicleParticleHandler getParticleHandler() {
         return particleHandler;
+    }
+
+    public java.util.Set<java.util.UUID> getTeleportingPlayers() {
+        return teleportingPlayers;
+    }
+
+    public java.util.Set<java.util.UUID> getTransitioningVehicles() {
+        return transitioningVehicles;
     }
 
     @Override
