@@ -30,7 +30,7 @@ public class RailClickHandler implements Listener {
             return;
         }
 
-        Minecart minecart = p.getWorld().spawn(e.getClickedBlock().getLocation(), Minecart.class);
+        Minecart minecart = p.getWorld().spawn(e.getClickedBlock().getLocation().add(0.5, 0, 0.5), Minecart.class);
         minecart.getPersistentDataContainer().set(plugin.getVehicleKey(), PersistentDataType.BYTE, (byte) 1);
         minecart.addPassenger(p);
     }

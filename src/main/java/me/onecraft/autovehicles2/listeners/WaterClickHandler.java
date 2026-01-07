@@ -33,6 +33,20 @@ public class WaterClickHandler implements Listener {
         }
 
         Location blockLocation = p.getLineOfSight(null, 5).get(0).getLocation();
+
+        // Search vertically for surface (max 4 blocks up)
+        for (int i = 0; i <= 4; i++) {
+            Location checkLoc = blockLocation.clone().add(0, i, 0);
+            if (checkLoc.getBlock().getType() == Material.AIR &&
+                    checkLoc.clone().subtract(0, 1, 0).getBlock().getType() == Material.WATER) {
+                blockLocation = checkLoc;
+                break;
+            }
+        }
+
+        // Center the boat
+        blockLocation.add(0.5, 0, 0.5);
+
         blockLocation.setYaw(p.getLocation().getYaw());
         blockLocation.setPitch(p.getLocation().getPitch());
 
