@@ -260,17 +260,22 @@ public class VehicleParticleHandler {
 
         Location spawnLoc = calculateSpawnLoc(vehicle, speed, maxSpeed);
 
+        boolean force = plugin.getConfig().getBoolean("particles.force_on_minimal", true);
+        if (force) {
+            adjustedAmount = Math.max(1, adjustedAmount / 2);
+        }
+
         if (params.effect.getDataType() == BlockData.class) {
             if (blockData.getMaterial().isAir()) {
                 blockData = Material.STONE.createBlockData();
             }
             location.getWorld().spawnParticle(
                     params.effect, spawnLoc, adjustedAmount,
-                    params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed, blockData);
+                    params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed, blockData, force);
         } else {
             location.getWorld().spawnParticle(
                     params.effect, spawnLoc, adjustedAmount,
-                    params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed);
+                    params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed, null, force);
         }
     }
 
@@ -285,17 +290,23 @@ public class VehicleParticleHandler {
             spawnLoc.add(direction.multiply(-params.particleOffset));
         }
 
+        boolean force = plugin.getConfig().getBoolean("particles.force_on_minimal", true);
+        int amount = params.amount;
+        if (force) {
+            amount = Math.max(1, amount / 2);
+        }
+
         if (params.effect.getDataType() == BlockData.class) {
             if (blockData.getMaterial().isAir()) {
                 blockData = Material.STONE.createBlockData();
             }
             location.getWorld().spawnParticle(
-                    params.effect, spawnLoc, params.amount,
-                    params.offsetX, params.offsetY, params.offsetZ, params.speed, blockData);
+                    params.effect, spawnLoc, amount,
+                    params.offsetX, params.offsetY, params.offsetZ, params.speed, blockData, force);
         } else {
             location.getWorld().spawnParticle(
-                    params.effect, spawnLoc, params.amount,
-                    params.offsetX, params.offsetY, params.offsetZ, params.speed);
+                    params.effect, spawnLoc, amount,
+                    params.offsetX, params.offsetY, params.offsetZ, params.speed, null, force);
         }
     }
 
