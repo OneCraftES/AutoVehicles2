@@ -262,7 +262,7 @@ public class VehicleParticleHandler {
 
         boolean force = plugin.getConfig().getBoolean("particles.force_on_minimal", true);
         if (force) {
-            adjustedAmount = Math.max(1, adjustedAmount / 2);
+            adjustedAmount = Math.max(1, adjustedAmount / 4);
         }
 
         if (params.effect.getDataType() == BlockData.class) {
@@ -293,7 +293,7 @@ public class VehicleParticleHandler {
         boolean force = plugin.getConfig().getBoolean("particles.force_on_minimal", true);
         int amount = params.amount;
         if (force) {
-            amount = Math.max(1, amount / 2);
+            amount = Math.max(1, amount / 4);
         }
 
         if (params.effect.getDataType() == BlockData.class) {
