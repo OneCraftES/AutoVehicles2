@@ -15,7 +15,7 @@ public class ConfigurationManager {
     private final Plugin plugin;
     private FileConfiguration config;
     private File configFile;
-    private static final String CURRENT_VERSION = "2.1.0";
+    private static final String CURRENT_VERSION = "2.2.0";
 
     public ConfigurationManager(Plugin plugin) {
         this.plugin = plugin;
@@ -85,17 +85,61 @@ public class ConfigurationManager {
             newConfig.set("disabled_worlds", oldConfig.getStringList("disabled_worlds"));
         }
 
-        // Transfer particle settings if they exist
-        if (oldConfig.contains("particles.enabled")) {
-            newConfig.set("particles.enabled", oldConfig.getBoolean("particles.enabled"));
+        // Transfer settings
+        if (oldConfig.contains("settings")) {
+            for (String key : oldConfig.getConfigurationSection("settings").getKeys(false)) {
+                newConfig.set("settings." + key, oldConfig.get("settings." + key));
+            }
         }
 
-        // Transfer custom biome settings if they exist
-        if (oldConfig.contains("particles.biomes")) {
-            for (String biome : oldConfig.getConfigurationSection("particles.biomes").getKeys(false)) {
-                String biomePath = "particles.biomes." + biome;
-                if (oldConfig.contains(biomePath)) {
-                    newConfig.set(biomePath, oldConfig.getConfigurationSection(biomePath));
+        // Transfer particle settings
+        if (oldConfig.contains("particles")) {
+            if (oldConfig.contains("particles.enabled")) {
+                newConfig.set("particles.enabled", oldConfig.getBoolean("particles.enabled"));
+            }
+            if (oldConfig.contains("particles.force_on_minimal")) {
+                newConfig.set("particles.force_on_minimal", oldConfig.getBoolean("particles.force_on_minimal"));
+            }
+
+            // Transfer default styles
+            if (oldConfig.contains("particles.default_style")) {
+                for (String type : oldConfig.getConfigurationSection("particles.default_style").getKeys(false)) {
+                    String path = "particles.default_style." + type;
+                    newConfig.set(path, oldConfig.getConfigurationSection(path));
+                }
+            }
+
+            // Transfer environment settings
+            if (oldConfig.contains("particles.environment")) {
+                // Underground
+                if (oldConfig.contains("particles.environment.underground")) {
+                    newConfig.set("particles.environment.underground",
+                            oldConfig.getConfigurationSection("particles.environment.underground"));
+                }
+                // Ice path
+                if (oldConfig.contains("particles.environment.ice_path")) {
+                    newConfig.set("particles.environment.ice_path",
+                            oldConfig.getConfigurationSection("particles.environment.ice_path"));
+                }
+
+                // Biomes
+                if (oldConfig.contains("particles.environment.biomes")) {
+                    for (String key : oldConfig.getConfigurationSection("particles.environment.biomes")
+                            .getKeys(false)) {
+                        // Check specifically for enabled flag or biome keys
+                        String path = "particles.environment.biomes." + key;
+                        newConfig.set(path, oldConfig.get(path));
+                    }
+                }
+                // Backwards compatibility for old "particles.biomes" path
+                else if (oldConfig.contains("particles.biomes")) {
+                    for (String biome : oldConfig.getConfigurationSection("particles.biomes").getKeys(false)) {
+                        String oldPath = "particles.biomes." + biome;
+                        String newPath = "particles.environment.biomes." + biome;
+                        if (oldConfig.contains(oldPath)) {
+                            newConfig.set(newPath, oldConfig.getConfigurationSection(oldPath));
+                        }
+                    }
                 }
             }
         }
@@ -112,7 +156,13 @@ public class ConfigurationManager {
                 // Fall through to next version
             case "1.2.0":
                 // Handle migration from 1.2.0 to 1.3.0
+                // Handle migration from 1.2.0 to 1.3.0
                 migrateFrom120To130(oldConfig, newConfig);
+                // Fall through
+            case "1.3.0":
+            case "2.0.0":
+            case "2.1.0":
+                // No specific migration needed, just transfer values
                 break;
         }
     }
