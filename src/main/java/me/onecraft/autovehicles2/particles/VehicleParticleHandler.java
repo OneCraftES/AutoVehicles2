@@ -261,21 +261,41 @@ public class VehicleParticleHandler {
         Location spawnLoc = calculateSpawnLoc(vehicle, speed, maxSpeed);
 
         boolean force = plugin.getConfig().getBoolean("particles.force_on_minimal", true);
+        double forcedRatio = plugin.getConfig().getDouble("particles.forced_display_ratio", 0.25);
+
+        int forcedAmount = 0;
+        int normalAmount = adjustedAmount;
+
         if (force) {
-            adjustedAmount = Math.max(1, adjustedAmount / 4);
+            forcedAmount = Math.max(1, (int) (adjustedAmount * forcedRatio));
+            normalAmount = Math.max(0, adjustedAmount - forcedAmount);
         }
 
         if (params.effect.getDataType() == BlockData.class) {
             if (blockData.getMaterial().isAir()) {
                 blockData = Material.STONE.createBlockData();
             }
-            location.getWorld().spawnParticle(
-                    params.effect, spawnLoc, adjustedAmount,
-                    params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed, blockData, force);
+            if (forcedAmount > 0) {
+                location.getWorld().spawnParticle(
+                        params.effect, spawnLoc, forcedAmount,
+                        params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed, blockData, true);
+            }
+            if (normalAmount > 0) {
+                location.getWorld().spawnParticle(
+                        params.effect, spawnLoc, normalAmount,
+                        params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed, blockData, false);
+            }
         } else {
-            location.getWorld().spawnParticle(
-                    params.effect, spawnLoc, adjustedAmount,
-                    params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed, null, force);
+            if (forcedAmount > 0) {
+                location.getWorld().spawnParticle(
+                        params.effect, spawnLoc, forcedAmount,
+                        params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed, null, true);
+            }
+            if (normalAmount > 0) {
+                location.getWorld().spawnParticle(
+                        params.effect, spawnLoc, normalAmount,
+                        params.offsetX, params.offsetY, params.offsetZ, adjustedSpeed, null, false);
+            }
         }
     }
 
@@ -291,22 +311,42 @@ public class VehicleParticleHandler {
         }
 
         boolean force = plugin.getConfig().getBoolean("particles.force_on_minimal", true);
-        int amount = params.amount;
+        double forcedRatio = plugin.getConfig().getDouble("particles.forced_display_ratio", 0.25);
+
+        int totalAmount = params.amount;
+        int forcedAmount = 0;
+        int normalAmount = totalAmount;
+
         if (force) {
-            amount = Math.max(1, amount / 4);
+            forcedAmount = Math.max(1, (int) (totalAmount * forcedRatio));
+            normalAmount = Math.max(0, totalAmount - forcedAmount);
         }
 
         if (params.effect.getDataType() == BlockData.class) {
             if (blockData.getMaterial().isAir()) {
                 blockData = Material.STONE.createBlockData();
             }
-            location.getWorld().spawnParticle(
-                    params.effect, spawnLoc, amount,
-                    params.offsetX, params.offsetY, params.offsetZ, params.speed, blockData, force);
+            if (forcedAmount > 0) {
+                location.getWorld().spawnParticle(
+                        params.effect, spawnLoc, forcedAmount,
+                        params.offsetX, params.offsetY, params.offsetZ, params.speed, blockData, true);
+            }
+            if (normalAmount > 0) {
+                location.getWorld().spawnParticle(
+                        params.effect, spawnLoc, normalAmount,
+                        params.offsetX, params.offsetY, params.offsetZ, params.speed, blockData, false);
+            }
         } else {
-            location.getWorld().spawnParticle(
-                    params.effect, spawnLoc, amount,
-                    params.offsetX, params.offsetY, params.offsetZ, params.speed, null, force);
+            if (forcedAmount > 0) {
+                location.getWorld().spawnParticle(
+                        params.effect, spawnLoc, forcedAmount,
+                        params.offsetX, params.offsetY, params.offsetZ, params.speed, null, true);
+            }
+            if (normalAmount > 0) {
+                location.getWorld().spawnParticle(
+                        params.effect, spawnLoc, normalAmount,
+                        params.offsetX, params.offsetY, params.offsetZ, params.speed, null, false);
+            }
         }
     }
 

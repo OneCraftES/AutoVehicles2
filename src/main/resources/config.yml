@@ -2,7 +2,7 @@
 # |       AutoVehicles2 Config      |
 # +---------------------------------+
 # Configuration version - DO NOT MODIFY
-config_version: 2.2.0
+config_version: 2.2.1
 
 # Settings for Vehicle Behavior
 settings:
@@ -22,8 +22,13 @@ particles:
   enabled: true
 
   # Should particle visibility be forced for players with "Minimal" video settings?
-  # If true, particles will be shown but the count will be reduced by 75% for performance.
+  # The 'forced_display_ratio' determines how many particles are forced (visible to everyone).
   force_on_minimal: true
+  
+  # Ratio of particles that are forced (0.0 to 1.0). Default 0.25 (25%).
+  # - Minimal clients see 25% of particles (forced batch).
+  # - Normal clients see 100% of particles (forced batch + normal batch).
+  forced_display_ratio: 0.25
   
   # Default particle style for vehicles (requires autovehicles.particles permission)
   default_style:

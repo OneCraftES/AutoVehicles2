@@ -15,7 +15,7 @@ public class ConfigurationManager {
     private final Plugin plugin;
     private FileConfiguration config;
     private File configFile;
-    private static final String CURRENT_VERSION = "2.2.0";
+    private static final String CURRENT_VERSION = "2.2.1";
 
     public ConfigurationManager(Plugin plugin) {
         this.plugin = plugin;
@@ -99,6 +99,9 @@ public class ConfigurationManager {
             }
             if (oldConfig.contains("particles.force_on_minimal")) {
                 newConfig.set("particles.force_on_minimal", oldConfig.getBoolean("particles.force_on_minimal"));
+            }
+            if (oldConfig.contains("particles.forced_display_ratio")) {
+                newConfig.set("particles.forced_display_ratio", oldConfig.getDouble("particles.forced_display_ratio"));
             }
 
             // Transfer default styles

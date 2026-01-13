@@ -6,7 +6,7 @@
 
     <groupId>me.onecraft</groupId>
     <artifactId>AutoVehicles2</artifactId>
-    <version>2.2.0</version>
+    <version>2.2.1</version>
     <packaging>jar</packaging>
 
     <name>AutoVehicles2</name>
