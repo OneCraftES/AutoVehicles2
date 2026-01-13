@@ -20,6 +20,10 @@ disabled_worlds:
 particles:
   # Global toggle for particle effects
   enabled: true
+
+  # Should particle visibility be forced for players with "Minimal" video settings?
+  # If true, particles will be shown but the count will be reduced by 50% for performance.
+  force_on_minimal: true
   
   # Default particle style for vehicles (requires autovehicles.particles permission)
   default_style:
