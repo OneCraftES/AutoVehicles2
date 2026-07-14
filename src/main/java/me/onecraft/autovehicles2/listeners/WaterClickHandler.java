@@ -14,8 +14,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.List;
-
 public class WaterClickHandler implements Listener {
 
     private final AutoVehicles2 plugin;
@@ -28,29 +26,42 @@ public class WaterClickHandler implements Listener {
     public void onRightClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
 
-        if (!isWater(e, p)) {
+        if (!validatePlayer(e, p)) {
             return;
         }
 
-        Location blockLocation = p.getLineOfSight(null, 5).get(0).getLocation();
-
-        // Search vertically for surface (max 4 blocks up)
-        for (int i = 0; i <= 4; i++) {
-            Location checkLoc = blockLocation.clone().add(0, i, 0);
-            if (checkLoc.getBlock().getType() == Material.AIR &&
-                    checkLoc.clone().subtract(0, 1, 0).getBlock().getType() == Material.WATER) {
-                blockLocation = checkLoc;
-                break;
+        // Raytrace logic with underwater fallback
+        org.bukkit.util.RayTraceResult result;
+        if (p.getEyeLocation().getBlock().getType() == Material.WATER) {
+            // Underwater: Try hitting solid blocks first (e.g. slabs)
+            result = p.rayTraceBlocks(5, FluidCollisionMode.NEVER);
+            if (result == null || result.getHitBlock() == null || !isWaterOrWaterloggedSlab(result.getHitBlock())) {
+                // Fallback: Allow hitting water itself
+                result = p.rayTraceBlocks(5, FluidCollisionMode.ALWAYS);
             }
+        } else {
+            // Above water: Hit water surface
+            result = p.rayTraceBlocks(5, FluidCollisionMode.ALWAYS);
         }
 
-        // Center the boat
-        blockLocation.add(0.5, 0, 0.5);
+        if (result == null || result.getHitBlock() == null) {
+            return;
+        }
 
-        blockLocation.setYaw(p.getLocation().getYaw());
-        blockLocation.setPitch(p.getLocation().getPitch());
+        Block hitBlock = result.getHitBlock();
 
-        Boat boat = p.getWorld().spawn(blockLocation, OakBoat.class);
+        if (!isWaterOrWaterloggedSlab(hitBlock)) {
+            return;
+        }
+
+        // Use the exact hit position for spawning
+        Location spawnLoc = result.getHitPosition().toLocation(p.getWorld());
+
+        // Keep player's rotation
+        spawnLoc.setYaw(p.getLocation().getYaw());
+        spawnLoc.setPitch(p.getLocation().getPitch());
+
+        Boat boat = p.getWorld().spawn(spawnLoc, OakBoat.class);
         boat.getPersistentDataContainer().set(plugin.getVehicleKey(), PersistentDataType.BYTE, (byte) 1);
         boat.addPassenger(p);
     }
@@ -69,17 +80,25 @@ public class WaterClickHandler implements Listener {
      * @param p the player
      * @return whether the player is valid to create and use a new AutoVehicles2.
      */
-    private boolean isWater(PlayerInteractEvent e, Player p) {
-        if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR)
+    private boolean validatePlayer(PlayerInteractEvent e, Player p) {
+        return (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR)
                 && !plugin.getConfig().getStringList("disabled_worlds").contains(p.getWorld().getName())
                 && (p.isOp() || p.hasPermission("autovehicles2.use"))
                 && (PlayerConfig.getPlayersFileConfig().getBoolean("players." + p.getUniqueId() + ".boat.toggled"))
                 && !p.isInsideVehicle()
-                && p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
-            List<Block> los = e.getPlayer().getLineOfSight(null, 5);
-            for (Block b : los) {
-                if (b.getType() == Material.WATER) {
-                    return true;
+                && p.getInventory().getItemInMainHand().getType().equals(Material.AIR);
+    }
+
+    private boolean isWaterOrWaterloggedSlab(Block b) {
+        if (b.getType() == Material.WATER) {
+            return true;
+        }
+        if (b.getBlockData() instanceof org.bukkit.block.data.Waterlogged) {
+            org.bukkit.block.data.Waterlogged waterlogged = (org.bukkit.block.data.Waterlogged) b.getBlockData();
+            if (waterlogged.isWaterlogged()) {
+                if (b.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
+                    return ((org.bukkit.block.data.type.Slab) b.getBlockData())
+                            .getType() == org.bukkit.block.data.type.Slab.Type.BOTTOM;
                 }
             }
         }
